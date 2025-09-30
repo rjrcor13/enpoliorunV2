@@ -13,14 +13,13 @@ import {
 import React from 'react';
 import { Button } from './ui/button';
 
+// --- Animation Variants ---
 const containerVariants = {
 	hidden: { opacity: 0 },
 	show: {
 		opacity: 1,
 		transition: {
-			// SLOWER: Stagger items a little more (0.1 -> 0.2)
 			staggerChildren: 0.2,
-			// SLOWER: Slight delay before staggered items begin (0.3 -> 0.5)
 			delayChildren: 0.5,
 		},
 	},
@@ -31,7 +30,6 @@ const itemVariants = {
 	show: {
 		opacity: 1,
 		y: 0,
-		// SLOWER: Individual item movement duration (default -> 0.8)
 		transition: { duration: 0.8, ease: 'easeOut' },
 	},
 };
@@ -102,6 +100,7 @@ const distancesData = [
 
 const getCardStyles = (colorClass) => {
 	let gradientValue = '';
+	const imageKitUrlEndpoint = 'https://ik.imagekit.io/zoiyj5rqq';
 
 	if (colorClass === 'bg-gradient-oceanic') {
 		gradientValue = 'linear-gradient(to bottom right, #4ade80, #3b82f6)';
@@ -112,13 +111,13 @@ const getCardStyles = (colorClass) => {
 	}
 
 	const silhouetteFilePath = 'asset1.png';
-
-	const fullImageKitUrl = `https://ik.imagekit.io/zoiyj5rqq/endpoliorun/${silhouetteFilePath}`;
-
+	const fullImageKitUrl = `${imageKitUrlEndpoint}/endpoliorun/${silhouetteFilePath}`;
 	const silhouetteUrl = `url('${fullImageKitUrl}?tr=q-15,e-grayscale,bl-15')`;
 
 	return {
 		backgroundImage: `${silhouetteUrl}, ${gradientValue}`,
+		backgroundSize: 'cover, cover',
+		backgroundPosition: 'center',
 	};
 };
 
@@ -138,41 +137,54 @@ const ItemDetail = ({ label, value, icon: Icon, isTime = false }) => {
 	);
 };
 
-// Component to handle ImageKit rendering and animation for a single image asset
+// --- FIX 1: Optimized ImageAsset component ---
 const ImageAsset = ({ filePath, altText, isFinisher = false, type }) => {
 	if (!filePath) return null;
-	let maxSize = 'max-w-[500px]';
+
+	// Set max dimensions and transformations based on item type
+	let ikTransformations = [{ quality: '80', height: 'auto' }];
+	let maxSizeClass = 'max-w-[500px]';
+
+	// For smaller items (like bibs and medals), request a smaller image from ImageKit
+	if (type === 'bib') {
+		ikTransformations.push({ width: 300 }); // Request max width of 300px from ImageKit
+		maxSizeClass = 'max-w-[250px]';
+	} else if (type === 'medal') {
+		ikTransformations.push({ width: 400 }); // Request max width of 400px from ImageKit
+		maxSizeClass = 'max-w-[500px]';
+	} else if (type === '6KM') {
+		// Singlets are often large, request a balance
+		ikTransformations.push({ width: 500 });
+	}
+
 	const containerClass = isFinisher
 		? 'flex flex-col items-center p-4'
 		: 'p-4 flex-shrink-0';
-	if (type === 'bib') {
-		maxSize = 'max-w-[250px]';
-	} else if (type === 'medal') {
-		maxSize = 'max-w-[500px]';
-	} else {
-		maxSize = 'max-w-[500px]';
-	}
+
 	return (
+		// Note: ImageAsset itself uses itemVariants for staggering
 		<motion.div variants={itemVariants} className={containerClass}>
 			<Image
 				src={`/endpoliorun/${filePath}`}
 				alt={altText}
-				className={`mx-auto w-full h-auto ${maxSize}`}
-				transformation={[
-					{
-						quality: '80',
-						height: 'auto',
-					},
-				]}
-				srcSet={[{ width: 300 }, { width: 500 }, { width: 700 }]}
+				className={`mx-auto w-full h-auto ${maxSizeClass}`}
+				// Use transformations array defined above for better optimization
+				transformation={ikTransformations}
+				// Rely on loading="lazy" and lqip for smooth loading experience
 				loading="lazy"
 				lqip={{ active: true }}
+				// NOTE: Removed srcSet because specifying width in transformation is often cleaner
+				// when optimizing a fixed size component for performance.
 			/>
 		</motion.div>
 	);
 };
 
 const EventDetails = () => {
+	// FIX 2: Use whileInView on the container to trigger loading only when visible
+	const cardTransition = { duration: 0.7 };
+	const cardViewport = { once: true, amount: 0.2 }; // Card must be 20% visible to animate/load
+
 	return (
 		<section id="details" className="py-20 bg-white">
 			<div className="container mx-auto px-4 ">
@@ -191,31 +203,23 @@ const EventDetails = () => {
 					</p>
 				</motion.div>
 
-				<div className="grid sm:grid-cols-3 grid-cols-1 md:gap-4 gap-1   overflow-hidden rounded-xl md:p-5 p-2 bg-white">
+				<div className="grid sm:grid-cols-3 grid-cols-1 gap-4   overflow-hidden rounded-xl md:p-5 p-0 bg-white">
 					{distancesData.map((category, index) => (
-						// <motion.div
-						// 	key={index}
-						// 	initial={{ opacity: 0, scale: 0.95 }}
-						// 	whileInView={{ opacity: 1, scale: 1 }}
-						// 	// SLOWER: Card appearance duration (0.5 -> 0.7)
-						// 	transition={{ duration: 0.7, delay: index * 0.15 }}
-						// 	viewport={{ once: true, amount: 0.5 }}
-						// 	className={`flex flex-col ${category.colorClass} text-white shadow-lg rounded-xl`}
-						// >
 						<motion.div
 							key={index}
 							initial={{ opacity: 0, scale: 0.95 }}
 							whileInView={{ opacity: 1, scale: 1 }}
-							transition={{ duration: 0.7, delay: index * 0.15 }}
-							viewport={{ once: true, amount: 0.5 }}
+							transition={{ ...cardTransition, delay: index * 0.15 }}
+							viewport={cardViewport}
 							className={` flex flex-col text-white shadow-lg rounded-xl bg-cover bg-center bg-blend-overlay `}
 							style={getCardStyles(category.colorClass)}
 						>
+							{/* Inner animation container, relies on the outer card being in view */}
 							<motion.div
 								variants={containerVariants}
 								initial="hidden"
 								whileInView="show"
-								viewport={{ once: true, amount: 0.2 }}
+								viewport={{ once: true, amount: 0 }} // Allow children to animate as soon as card is loaded
 								className="flex-grow flex flex-col"
 							>
 								{/* Distance Display */}
@@ -231,7 +235,7 @@ const EventDetails = () => {
 									</div>
 								</motion.div>
 
-								{/* 🚀 CONSOLIDATED IMAGE RENDERING */}
+								{/* 🚀 CONSOLIDATED IMAGE RENDERING (Now more optimized) */}
 								<ImageAsset
 									filePath={category.images.singlet}
 									altText={`Race Singlet for ${category.distance}`}
@@ -251,6 +255,7 @@ const EventDetails = () => {
 									filePath={category.images.finisher}
 									altText={`Finisher shirt for ${category.distance}`}
 									isFinisher
+									type="finisher"
 								/>
 							</motion.div>
 
@@ -340,13 +345,17 @@ const EventDetails = () => {
 								<Button
 									onClick={handleRegistrationClick}
 									size="xl"
-									className={`text-xl px-12 py-4 rounded-full bg-white hover:bg-gradient-sunset font-black  hover:scale-[1.05] transition-all duration-300 cursor-pointer ${
-										category.colorClass === 'bg-gradient-oceanic'
-											? 'text-blue-600 shadow-blue-500/50 hover:shadow-blue-400/80'
-											: category.colorClass === 'bg-gradient-sunset'
-											? 'text-orange-600 shadow-orange-500/50 hover:shadow-orange-400/80'
-											: 'text-fuchsia-600 shadow-fuchsia-500/50 hover:shadow-fuchsia-400/80'
-									} `}
+									className={`text-xl px-12 py-4 rounded-full bg-white font-black hover:scale-[1.05] transition-all duration-300 cursor-pointer 
+                                        ${
+																					category.colorClass ===
+																					'bg-gradient-oceanic'
+																						? 'text-blue-600 shadow-blue-500/50 hover:shadow-blue-400/80 hover:bg-gray-100'
+																						: category.colorClass ===
+																						  'bg-gradient-sunset'
+																						? 'text-orange-600 shadow-orange-500/50 hover:shadow-orange-400/80 hover:bg-gray-100'
+																						: 'text-fuchsia-600 shadow-fuchsia-500/50 hover:shadow-fuchsia-400/80 hover:bg-gray-100'
+																				}
+                                    `}
 								>
 									Register Now
 								</Button>
