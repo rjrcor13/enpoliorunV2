@@ -115,7 +115,7 @@ const getCardStyles = (colorClass) => {
 
 	const fullImageKitUrl = `https://ik.imagekit.io/zoiyj5rqq/endpoliorun/${silhouetteFilePath}`;
 
-	const silhouetteUrl = `url('${fullImageKitUrl}?tr=q-15,e-grayscale,h-auto:w-auto')`;
+	const silhouetteUrl = `url('${fullImageKitUrl}?tr=q-15,e-grayscale,bl-15')`;
 
 	return {
 		backgroundImage: `${silhouetteUrl}, ${gradientValue}`,
