@@ -2,6 +2,7 @@ import AboutEvent from '@/components/AboutEvent2';
 import EventDetails from '@/components/EventDetails';
 import HeroSection from '@/components/HeroSection';
 import Navigation from '@/components/Navigation';
+import Footer from './components/Footer';
 import RouteMap from './components/RouteMap';
 
 function App() {
@@ -19,7 +20,8 @@ function App() {
 				<HeroSection />
 				<AboutEvent />
 				<EventDetails />
-				<RouteMap />
+				{/* <RouteMap /> */}
+				<Footer />
 			</div>
 		</>
 	);
