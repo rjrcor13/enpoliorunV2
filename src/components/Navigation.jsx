@@ -5,6 +5,10 @@ import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
+const handleRegistrationClick = () => {
+	window.open('https://forms.gle/EZMB8BxwhjbcrdU28', '_blank');
+};
+
 const Navigation = () => {
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -59,7 +63,7 @@ const Navigation = () => {
 					{/* Desktop Navigation */}
 					<div className=" flex items-center space-x-8">
 						<Button
-							onClick={() => scrollToSection('registration')}
+							onClick={handleRegistrationClick}
 							className="gradient-bg text-white hover:opacity-90 hover:cursor-pointer shadow-lg"
 						>
 							Register Now

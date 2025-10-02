@@ -3,10 +3,15 @@ import endpoliorunlogo from '@/assets/endpoliorun.png';
 import rcEndPolioLogoW from '@/assets/rotary-end-polio-w.png';
 import rcLogo from '@/assets/rotary-logo-w.png';
 import { Button } from '@/components/ui/button';
+import { Image } from '@imagekit/react';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, Route, Users } from 'lucide-react';
 import React from 'react';
 import Countdown from './Countdown';
+
+//const endpoliorunUrl = 'end_polio_run.png'; // ⬅️ CONFIRM THIS PATH
+// const endpoliorunUrl = `https://ik.imagekit.io/zoiyj5rqq/endpoliorun/${endpoliorun}`;
+
 const HeroSection = () => {
 	const scrollToRegistration = () => {
 		const element = document.getElementById('registration');
@@ -53,6 +58,13 @@ const HeroSection = () => {
 							}}
 							className=""
 						>
+							{/* <Image
+								src={`/endpoliorun/${endpoliorunUrl}`}
+								alt="End Polio Run 2026 Logo"
+								className="p-2"
+								loading="lazy"
+								transformation={[{ width: 900, quality: 100 }]}
+							/> */}
 							<img
 								src={endpoliorunlogo}
 								alt="end polio run"

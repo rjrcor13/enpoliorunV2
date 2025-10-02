@@ -78,10 +78,10 @@ const Countdown = () => {
 					transition={{ delay: 1.2 + item.delay, duration: 0.6 }}
 					className="flex flex-col items-center p-3 sm:p-4 md:p-6 bg-white/10 backdrop-blur-sm rounded-xl shadow-lg border border-white/20"
 				>
-					<span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-orange-400 ">
+					<span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-orange-400 text-shadow-md">
 						{formatNumber(item.value)}
 					</span>
-					<span className="text-xs sm:text-sm md:text-base font-semibold mt-1 tracking-wider opacity-90">
+					<span className="text-xs sm:text-sm md:text-base font-semibold mt-1 tracking-wider opacity-90 text-shadow-md">
 						{item.label}
 					</span>
 				</motion.div>
