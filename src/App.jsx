@@ -20,7 +20,7 @@ function App() {
 				<HeroSection />
 				<AboutEvent />
 				<EventDetails />
-				{/* <RouteMap /> */}
+				<RouteMap />
 				<Footer />
 			</div>
 		</>

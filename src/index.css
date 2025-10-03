@@ -374,6 +374,20 @@ body {
 	background-attachment: fixed;
 	background-position: center;
 }
+
+.hero-pattern-two {
+	/* Replace '/path/to/your/pattern.png' with the actual path */
+	background-image: url('./assets/asset4.png');
+	/* This ensures the image repeats across the entire background */
+	background-repeat: no-repeat;
+	/* Optional: Set a background color if the pattern image has transparent areas */
+	background-color: #2c2c2c;
+	/* Optional: Adjust the size if needed */
+	background-size: 200rem;
+	opacity: 0.2; /* Keep it subtle */
+	background-attachment: fixed;
+	background-position: center;
+}
 /* 
 
 

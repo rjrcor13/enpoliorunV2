@@ -121,7 +121,7 @@ const Footer = () => {
 						<ul className="flex justify-center md:justify-start space-x-6">
 							<li>
 								<a
-									href="https://www.facebook.com/RCSJROTARY?rdid=JmHknjoJsFFMkWqo&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1A4yvuoRJk%2F#"
+									href="#"
 									target="_blank"
 									rel="noopener noreferrer"
 									className="text-white hover:text-red-400 transition-colors"
