@@ -193,10 +193,9 @@ const routes = [
 		textColor: 'text-blue-600',
 		mapBgColor: 'bg-[#3a86ff]',
 		highlights: [
-			'Starts & ends at BGC 30th St.',
-			'Scenic loop around High Street',
-			'Flat and beginner-friendly',
-			'Explore the heart of BGC',
+			'Starts & ends at Old Leyte Provincial Capitol grounds.',
+			'Water station at 1.5km & 3km',
+			'Turnaround point at Leyeco II',
 		],
 		mapImage: '/routes/6k.jpg',
 		googleUrl: 'https://goo.gl/maps/your-6k-route-link-here',
@@ -207,10 +206,9 @@ const routes = [
 		textColor: 'text-orange-600',
 		mapBgColor: 'bg-[#fb5607]',
 		highlights: [
-			'Includes Kalayaan Flyover challenge',
-			'Passes through two BGC districts',
-			'Moderate elevation for a good workout',
-			'Water stations strategically placed',
+			'Starts & ends at Old Leyte Provincial Capitol grounds.',
+			'Water station at 1.5km & 3km',
+			'Turnaround point at Leyeco II',
 		],
 		mapImage: '/routes/12k.jpg',
 		googleUrl: 'https://goo.gl/maps/your-12k-route-link-here',
@@ -221,10 +219,9 @@ const routes = [
 		textColor: 'text-pink-600',
 		mapBgColor: 'bg-[#ff006e]',
 		highlights: [
-			'The ultimate Half Marathon course',
-			'Covers extensive BGC landmarks',
-			'Multiple challenging sections and flats',
-			'Designed for serious runners aiming for a PR',
+			'Starts & ends at Old Leyte Provincial Capitol grounds.',
+			'Water station at 1.5km & 3km',
+			'Turnaround point at Leyeco II',
 		],
 		mapImage: '/routes/21k.jpg',
 		googleUrl: 'https://goo.gl/maps/your-21k-route-link-here',
@@ -291,14 +288,14 @@ const DetailsPanel = ({ route, isEven }) => (
 		<div>
 			{/* Distance Header - Clean Text */}
 			<h2
-				className={`text-5xl md:text-5xl font-extrabold italic mb-4 bg-clip-text text-transparent bg-gradient-to-r ${route.gradientClass}`}
+				className={`text-5xl md:text-5xl font-extrabold italic mb-4 bg-clip-text text-transparent bg-gradient-to-r  ${route.gradientClass}`}
 			>
 				{route.distance}
 			</h2>
 
-			<p className="flex items-center gap-2 text-gray-500 mb-6 border-b border-gray-200 pb-4">
-				<MapPin className="w-5 h-5 text-red-500" /> Bonifacio Global City,
-				Taguig
+			<p className="flex items-center gap-2 text-gray-500 mb-6 border-b border-gray-200 pb-4 text-base_ items-start_ text-sm align-top">
+				<MapPin className="w-5 h-5 text-red-500 flex-shrink-0  " /> Old Leyte
+				Provincial Capitol, Tacloban City
 			</p>
 
 			{/* Highlights */}

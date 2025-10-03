@@ -144,7 +144,7 @@ const getCardStyles = (colorClass) => {
 	};
 };
 
-const ItemDetail = ({ label, value, icon: Icon, isTime = false }) => {
+const ItemDetail = ({ label, value, icon: Icon, isTime = false, type }) => {
 	if (!value && !isTime) return null;
 
 	const text = isTime ? value : label;
@@ -154,8 +154,14 @@ const ItemDetail = ({ label, value, icon: Icon, isTime = false }) => {
 			variants={itemVariants}
 			className="flex items-center gap-2 text-shadow-lg"
 		>
-			{Icon && <Icon className="w-5 h-5 text-black/80" />}
-			<p className="text-black">{text}</p>
+			{Icon && <Icon className="w-5 h-5 text-white/80" />}
+			{type === 'time' ? (
+				<p className="text-white">
+					{label}: {text}
+				</p>
+			) : (
+				<p className="text-white">{text}</p>
+			)}
 		</motion.div>
 	);
 };
@@ -165,7 +171,7 @@ const PricingDetail = ({ label, price, icon: Icon, isPromo = false }) => {
 	const isAvailable = isPromo ? IS_EARLY_BIRD_ACTIVE : true;
 	const priceColor = isAvailable
 		? 'text-yellow-300'
-		: 'text-gray-500 line-through';
+		: 'text-gray-700 line-through';
 
 	return (
 		<motion.div
@@ -173,10 +179,10 @@ const PricingDetail = ({ label, price, icon: Icon, isPromo = false }) => {
 			className="flex items-center justify-between text-shadow-lg"
 		>
 			<div className="flex items-center gap-2">
-				<Icon className="w-5 h-5 text-black/80" />
+				<Icon className="w-5 h-5 text-white/80" />
 				<p
 					className={`font-semibold ${
-						isAvailable ? 'text-black' : 'text-gray-500'
+						isAvailable ? 'text-white' : 'text-gray-700'
 					}`}
 				>
 					{label}
@@ -308,14 +314,14 @@ const EventDetails = () => {
 							</motion.div>
 
 							<div
-								className=" sm:p-2 sm:m-2 p-6 m-8 lg:p-8 lg:m-8  bg-white/50 backdrop-blur-sm rounded-xl border-t shadow-xl border-white/20"
+								className=" sm:p-2 sm:m-2 p-6 m-8 lg:p-8 lg:m-8  bg-white/10 backdrop-blur-sm rounded-xl border-t shadow-xl border-white/20"
 								// className="xs:m-8 sm:m-2 md:m-8 md:p-6 xs:p-6 pt-4 bg-white/10 backdrop-blur-sm rounded-xl border-t shadow-xl border-white/20 "
 								id="details"
 							>
 								{/* --- REGISTRATION FEE SECTION --- */}
 								<motion.h3
 									variants={itemVariants}
-									className="text-sm sm:text-md font-bold mb-3 pb-1 border-b border-black/30 text-shadow-lg text-black"
+									className="text-sm sm:text-md  font-black mb-3 pb-1 border-b border-white/30 text-shadow-lg text-white"
 								>
 									REGISTRATION FEE
 								</motion.h3>
@@ -347,7 +353,7 @@ const EventDetails = () => {
 								{/* --- RACE TIMES SECTION --- */}
 								<motion.h3
 									variants={itemVariants}
-									className="text-sm sm:text-md font-bold mb-3 border-b pb-1 border-black/30 text-shadow-lg text-black"
+									className="text-sm sm:text-md font-black mb-3 border-b pb-1 border-white/30 text-shadow-lg text-white"
 								>
 									RACE TIMES
 								</motion.h3>
@@ -359,18 +365,21 @@ const EventDetails = () => {
 								>
 									<ItemDetail
 										label="Assembly"
+										type="time"
 										value={category.times.assembly}
 										icon={Clock}
 										isTime
 									/>
 									<ItemDetail
 										label="Gun Start"
+										type="time"
 										value={category.times.start}
 										icon={Trophy}
 										isTime
 									/>
 									<ItemDetail
 										label="Cut-Off"
+										type="time"
 										value={category.times.cutoff}
 										icon={Calendar}
 										isTime
@@ -380,7 +389,7 @@ const EventDetails = () => {
 								{/* --- INCLUSIONS SECTION --- */}
 								<motion.h3
 									variants={itemVariants}
-									className="text-sm sm:text-md text-shadow-lg font-bold mb-3 border-b pb-1 text-black border-black/30"
+									className="text-sm sm:text-md text-shadow-lg font-black mb-3 border-b pb-1 text-white border-white/30"
 								>
 									INCLUSIONS
 								</motion.h3>
